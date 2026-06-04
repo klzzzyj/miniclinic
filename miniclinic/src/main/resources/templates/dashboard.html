@@ -19,6 +19,7 @@
         .status-COMPLETED { color: #10B981; font-weight: bold; }
         .status-CANCELLED { color: #94A3B8; }
         .btn-cancel { background: #EF4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-left: 8px; }
+        .btn-complete { background: #10B981; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-left: 8px; }
     </style>
 </head>
 <body>
@@ -61,6 +62,18 @@
                             th:data-id="${appt.apptId}"
                             onclick="cancelAppointment(this)"
                             class="btn-cancel">取消</button>
+                    <!-- 新增看診完成按鈕 -->
+                    <button th:if="${appt.status == 'BOOKED'}"
+                            type="button"
+                            th:data-id="${appt.apptId}"
+                            onclick="completeAppointment(this)"
+                            class="btn-complete">看診完成</button>
+                    <!-- 新增看診完成按鈕 -->
+                    <button th:if="${appt.status == 'BOOKED'}"
+                            type="button"
+                            th:data-id="${appt.apptId}"
+                            onclick="completeAppointment(this)"
+                            class="btn-complete">看診完成</button>
                 </td>
             </tr>
         </tbody>
@@ -83,6 +96,40 @@
                     location.reload();
                 } else {
                     alert('取消失敗，請檢查權限或登入狀態');
+                }
+            });
+        }
+
+        function completeAppointment(btn) {
+            const id = btn.getAttribute('data-id');
+            if (!confirm('確認此病患已完成看診嗎？')) return;
+            
+            fetch(`/api/appointments/${id}/status`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'COMPLETED' })
+            }).then(res => {
+                if (res.ok) {
+                    location.reload();
+                } else {
+                    alert('操作失敗，請檢查權限或登入狀態');
+                }
+            });
+        }
+
+        function completeAppointment(btn) {
+            const id = btn.getAttribute('data-id');
+            if (!confirm('確認此病患已完成看診嗎？')) return;
+            
+            fetch(`/api/appointments/${id}/status`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'COMPLETED' })
+            }).then(res => {
+                if (res.ok) {
+                    location.reload();
+                } else {
+                    alert('操作失敗，請檢查權限或登入狀態');
                 }
             });
         }

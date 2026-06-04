@@ -25,6 +25,7 @@
         <th:block th:if="${isLoggedIn}">
             <a th:href="@{/dashboard}" style="color: #14B8A6;">管理後台</a>
             <a th:href="@{/patients}">病患清單</a>
+            <a th:href="@{/api/stats}">統計資訊</a>
         </th:block>
         
         <span th:if="${isLoggedIn}" class="user-info">
